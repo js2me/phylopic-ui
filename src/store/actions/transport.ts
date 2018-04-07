@@ -6,39 +6,6 @@ export class ResponseError extends Error {
 		super(response.statusText);
 	}
 }
-export const fetchList = <T>(endpoint: string, params: ListParams<T>) => async(dispatch: Dispatch<State>) => {
-	const query: {
-		[key: string]: string;
-	} = {
-		"size": String(params.size),
-		"start": String(params.start),
-	};
-	if (params.fields) {
-		query.fields = new Array(params.fields)
-			.sort()
-			.join(",");
-	}
-	if (params.filters) {
-		params.filters.forEach(filter => {
-			const [field, value] = filterToEntry(filter);
-			query[field] = value;
-		});
-	}
-	if (params.sort) {
-		query.sort = params.sort
-			.map(sort => `${sort.field}${sort.descending ? "-" : ""}`)
-			.join(",");
-	}
-	const queryString = Object
-		.keys(query)
-		.sort()
-		.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
-		.join("&");
-	const init: RequestInit = {
-		"method": "GET",
-	};
-	return dispatch(fetchJSON<T[]>(`${endpoint}?${queryString}`, init));
-};
 export const fetchJSON = <T>(url: string, init: RequestInit) => async() => {
 	init.headers = new Headers({
 		"Accept": "application/json",
@@ -78,4 +45,37 @@ const filterToEntry = <T, F extends keyof T>(filter: Filter<T, F>) => {
 		return String(filter.value);
 	};
 	return [`${filter.field}${writeOperation()}`, writeValue()];
+};
+export const fetchList = <T>(endpoint: string, params: ListParams<T>) => async(dispatch: Dispatch<State>) => {
+	const query: {
+		[key: string]: string;
+	} = {
+		"size": String(params.size),
+		"start": String(params.start),
+	};
+	if (params.fields) {
+		query.fields = new Array(params.fields)
+			.sort()
+			.join(",");
+	}
+	if (params.filters) {
+		params.filters.forEach(filter => {
+			const [field, value] = filterToEntry(filter);
+			query[field] = value;
+		});
+	}
+	if (params.sort) {
+		query.sort = params.sort
+			.map(sort => `${sort.field}${sort.descending ? "-" : ""}`)
+			.join(",");
+	}
+	const queryString = Object
+		.keys(query)
+		.sort()
+		.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+		.join("&");
+	const init: RequestInit = {
+		"method": "GET",
+	};
+	return dispatch(fetchJSON<T[]>(`${endpoint}?${queryString}`, init));
 };

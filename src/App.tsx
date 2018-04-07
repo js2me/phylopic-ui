@@ -1,7 +1,14 @@
+import AppBar from "material-ui/AppBar";
+import BottomNavigation from "material-ui/BottomNavigation";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as React from "react";
-import "./App.css";
+import Browse from "./features/browse/container";
 export default () => (
-	<div className="App">
-		:TODO:
-	</div>
+	<MuiThemeProvider>
+		<AppBar title="PhyloPic"/>
+		<div style={{"margin": "2rem", "text-align": "center", "width": "100%"}}>
+			<Browse/>
+		</div>
+		<BottomNavigation />
+	</MuiThemeProvider>
 );

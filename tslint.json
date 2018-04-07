@@ -190,7 +190,7 @@
 			"never"
 		],
 		"strict-boolean-expressions": false,
-		"switch-default": true,
+		"switch-default": false,
 		"trailing-comma": [
 			true
 		],

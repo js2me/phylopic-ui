@@ -1,8 +1,9 @@
 import { applyMiddleware, createStore } from "redux";
+import initialState from "./initialState";
 import middleware from "./middleware";
 import reducers from "./reducers";
 export default createStore(
-		reducers,
-		{},
-		applyMiddleware(...middleware),
+	reducers,
+	initialState,
+	applyMiddleware(...middleware),
 );
