@@ -7,7 +7,7 @@ export interface Props {
 	onRetry?: () => void;
 	progress: Progress;
 }
-const ProgressIndicator: React.StatelessComponent<Props> = ({ children, onRetry, progress }) => {
+const ProgressIndicator: React.SFC<Props> = ({ children, onRetry, progress }) => {
 	switch (progress.status) {
 		case "failure": {
 			return (

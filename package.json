@@ -7,20 +7,18 @@
 		"@types/react-redux": "^5.0.15",
 		"@types/redux-actions": "^2.2.4",
 		"@types/redux-thunk": "^2.1.0",
-		"@types/reselect": "^2.2.0",
 		"material-ui": "^0.20.0",
 		"react": "^16.3.1",
 		"react-dom": "^16.3.1",
 		"react-redux": "^5.0.7",
 		"redux": "^3.7.2",
-		"redux-thunk": "^2.2.0",
-		"reselect": "^3.0.1"
+		"redux-thunk": "^2.2.0"
 	},
 	"scripts": {
-		"start": "react-scripts-ts start",
 		"build": "react-scripts-ts build",
-		"test": "react-scripts-ts test --env=jsdom",
-		"eject": "react-scripts-ts eject"
+		"eject": "react-scripts-ts eject",
+		"start": "react-scripts-ts start",
+		"test": "react-scripts-ts test --env=jsdom"
 	},
 	"devDependencies": {
 		"@types/jest": "^22.2.2",

@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
+import { State } from "../reducers";
 import { Filter, ListParams } from "../types/ListParams";
-import { State } from "../types/State";
 export class ResponseError extends Error {
 	constructor(public readonly response: Response) {
 		super(response.statusText);

@@ -11,7 +11,7 @@ export interface Props {
 	onRetry: () => void;
 	progress: Progress;
 }
-const Browse: React.StatelessComponent<Props> = ({
+const Browse: React.SFC<Props> = ({
 	images,
 	onRetry,
 	progress,

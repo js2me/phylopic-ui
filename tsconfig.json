@@ -17,11 +17,6 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "outDir": "build/dist",
-    "paths": {
-      "lodash/*": [
-        "node_modules/@types/lodash-es/*"
-      ],
-    },
     "rootDir": "src",
     "sourceMap": true,
     "strictNullChecks": true,

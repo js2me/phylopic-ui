@@ -1,10 +1,10 @@
 import * as React from "react";
-import { connect, MapDispatchToPropsParam, MapStateToPropsParam,  } from "react-redux";
+import { connect } from "react-redux";
 import { getImages } from "../../store/actions/browse";
+import { State } from "../../store/reducers";
 import { Entity } from "../../store/types/Entity";
 import { Image } from "../../store/types/Image";
 import { Progress } from "../../store/types/Progress";
-import { State } from "../../store/types/State";
 import Browse from "./";
 const INITIAL_SIZE = 12;
 interface StateProps {
@@ -15,14 +15,15 @@ interface DispatchProps {
 	getImages: typeof getImages;
 }
 type Props = StateProps & DispatchProps;
-const mapStateToProps: MapStateToPropsParam<StateProps, Props, State> = state => {
-	const { progress, uids } = state.entityLists.browse;
+const mapStateToProps = (state: State) => {
+	const { progress, uids } = state.entities.lists.browse;
+	const { byUID } = state.entities;
 	return {
-		"images": uids.map(uid => state.entitiesByUID[uid]),
+		"images": uids.map(uid => byUID[uid]),
 		progress,
 	};
 };
-const mapDispatchToProps: MapDispatchToPropsParam<DispatchProps, Props> = dispatch => ({
+const mapDispatchToProps = () => ({
 	getImages,
 });
 class BrowseContainer extends React.Component<Props> {

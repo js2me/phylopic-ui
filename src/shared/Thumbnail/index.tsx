@@ -5,7 +5,7 @@ const DIMENSION = 64;
 export interface Props {
 	image: Entity & Partial<Image>;
 }
-const Thumbnail: React.StatelessComponent<Props> = ({ image }) => (
+const Thumbnail: React.SFC<Props> = ({ image }) => (
 	<img
 		alt={image.attribution ? `silhouette by ${image.attribution}` : "unattributed silhouette"}
 		height={DIMENSION}

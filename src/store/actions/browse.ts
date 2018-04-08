@@ -1,21 +1,22 @@
 import { Dispatch } from "redux";
+import { State } from "../reducers";
 import { Entity } from "../types/Entity";
 import { Image } from "../types/Image";
-import { State } from "../types/State";
 import { addToList } from "./entities";
 import { fetchJSON } from "./transport";
 const listID = "browse";
+interface LegacyResponse {
+	results: Array<{
+		credit: string;
+		licenseURL: string;
+		uid: string;
+	}>;
+	status: "success" | "failure";
+}
 export const getImages = (start: number, size: number) => async(dispatch: Dispatch<State>) => {
-	const response  = await dispatch(fetchJSON(`http://phylopic.org/api/a/image/list?length=${size}&options=credit+licenseURL&start=${start}`, {
+	const response  = await dispatch(fetchJSON<LegacyResponse>(`http://phylopic.org/api/a/image/list?length=${size}&options=credit+licenseURL&start=${start}`, {
 		"method": "GET",
-	})) as {
-		results: Array<{
-			credit: string;
-			licenseURL: string;
-			uid: string;
-		}>,
-		status: "success" | "failure",
-	};
+	}));
 	if (response.status !== "success") {
 		throw new Error(); // :TODO: details
 	}
@@ -23,7 +24,7 @@ export const getImages = (start: number, size: number) => async(dispatch: Dispat
 		...result,
 		"attribution": result.credit,
 	}));
-	await dispatch(addToList({
+	dispatch(addToList({
 		entities,
 		listID,
 		start,
