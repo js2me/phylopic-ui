@@ -44,12 +44,13 @@ export const setLightboxImage = (payload: SetLightboxImagePayload) => async(disp
 	try {
 		const { imageUID } = payload;
 		if (!imageUID) {
-			return dispatch(setLightbox({
+			dispatch(setLightbox({
 				"image": null,
 				"progress": {
 					"status": "success",
 				},
 			}));
+			return;
 		}
 		const existingImage: Readonly<Entity & Partial<Image>> | undefined = dispatch(getCachedEntity({ "uid": imageUID }));
 		if (isCompleteImage(existingImage)) {
@@ -80,14 +81,15 @@ export const setLightboxImage = (payload: SetLightboxImagePayload) => async(disp
 			dispatch(cacheEntities({ entities }));
 		}
 	} catch (error) {
-		return dispatch(setLightbox({
+		dispatch(setLightbox({
 			"progress": {
 				error,
 				"status": "failure",
 			},
 		}));
+		return;
 	}
-	return dispatch(setLightbox({
+	dispatch(setLightbox({
 		image,
 		"progress": {
 			"status": "success",

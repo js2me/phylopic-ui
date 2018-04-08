@@ -1,13 +1,13 @@
 export interface Failure {
-	error: Error;
-	status: "failure";
+	readonly error: Error;
+	readonly status: "failure";
 }
 export interface Pending {
-	status: "pending";
-	loaded?: number;
-	total?: number;
+	readonly status: "pending";
+	readonly loaded?: number;
+	readonly total?: number;
 }
 export interface Success {
-	status: "success";
+	readonly status: "success";
 }
 export type Progress = Pending | Failure | Success;

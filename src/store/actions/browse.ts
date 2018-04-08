@@ -6,6 +6,9 @@ import { addToList, setListProgress, setListTotal } from "./entities";
 import { fetchLegacy, Image as LegacyImage } from "./legacy";
 const listID = "browse";
 type Results = Array<Entity & Partial<LegacyImage>>;
+export const countLoadedImages = () =>
+	(dispatch: Dispatch<State>, getState: () => State) =>
+		getState().entities.lists[listID].uids.length;
 export const getImages = (start: number, size: number) => async(dispatch: Dispatch<State>) => {
 	dispatch(setListProgress({
 		listID,

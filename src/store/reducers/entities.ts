@@ -23,7 +23,7 @@ export interface State {
 }
 const createProgressiveList: () => ProgressiveList = () => ({
 	"progress": {
-		"status": "pending",
+		"status": "success",
 	},
 	"total": NaN,
 	"uids": [],

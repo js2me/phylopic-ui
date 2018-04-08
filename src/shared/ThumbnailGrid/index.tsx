@@ -5,7 +5,7 @@ import { Image } from "../../store/types/Image";
 import Thumbnail from "../Thumbnail";
 const SPACING = 40;
 export interface Props {
-	images: Array<Entity & Partial<Image>>;
+	images: ReadonlyArray<Entity & Partial<Image>>;
 	onImageClick?: (uid: string) => void;
 }
 const ThumbnailGrid: React.SFC<Props> = ({ images, onImageClick }) => (
