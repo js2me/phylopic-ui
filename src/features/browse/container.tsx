@@ -7,8 +7,9 @@ import { Entity } from "../../store/types/Entity";
 import { Image } from "../../store/types/Image";
 import { Progress } from "../../store/types/Progress";
 import Browse from "./";
-const INITIAL_SIZE = 12;
-const NEXT_SIZE = 48;
+const MIN_LOAD_SIZE = 12;
+const ITEM_HEIGHT = 108;
+const ITEM_WIDTH = 104;
 interface StateProps {
 	images: Array<Entity & Partial<Image>>;
 	progress: Progress;
@@ -18,6 +19,8 @@ interface DispatchProps {
 	dispatch: Dispatch<State>;
 }
 type Props = StateProps & DispatchProps;
+const getVisibleColumns = () =>  Math.floor(window.innerWidth / ITEM_WIDTH);
+const getVisibleRows = () =>  Math.ceil(window.innerHeight / ITEM_HEIGHT);
 const mapStateToProps = (state: State) => {
 	const { progress, total, uids } = state.entities.lists.browse;
 	const { byUID } = state.entities;
@@ -30,26 +33,24 @@ const mapStateToProps = (state: State) => {
 const mapDispatchToProps = (dispatch: Dispatch<State>) => ({ dispatch });
 class BrowseContainer extends React.Component<Props> {
 	public async componentWillMount() {
-		return this.loadNext(INITIAL_SIZE);
+		return this.loadNext();
 	}
 	public render() {
 		const { images, progress, total } = this.props;
 		return (
 			<Browse
 				images={images}
-				onLoadNext={async() => this.loadNext(NEXT_SIZE)}
-				onRetry={this.retry}
+				onLoadNext={this.loadNext}
 				progress={progress}
 				total={total}
 			/>
 		);
 	}
-	private readonly loadNext = async(size: number) => {
+	private readonly loadNext = async() => {
 		const { dispatch, images } = this.props;
-		return dispatch(getImages(images.length, size));
+		const size = getVisibleRows() * getVisibleColumns();
+		return dispatch(getImages(images.length, Math.max(MIN_LOAD_SIZE, size)));
 	}
-	private readonly retry = async() =>
-		this.loadNext(this.props.images.length ? NEXT_SIZE : INITIAL_SIZE)
 }
 export default connect(
 	mapStateToProps,

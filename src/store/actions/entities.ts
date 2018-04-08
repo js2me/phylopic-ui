@@ -5,6 +5,7 @@ export const ADD_TO_LIST = "ADD_TO_LIST";
 export const CACHE_ENTITIES = "CACHE_ENTITIES";
 export const CLEAR_LIST = "CLEAR_LIST";
 export const SET_LIST_PROGRESS = "SET_LIST_PROGRESS";
+export const SET_LIST_TOTAL = "SET_LIST_TOTAL";
 import { State } from "../reducers";
 export interface AddToListPayload {
 	entities: Entity[];
@@ -22,6 +23,10 @@ export interface ClearListPayload {
 export interface SetListProgressPayload {
 	listID: string;
 	progress: Progress;
+}
+export interface SetListTotalPayload {
+	listID: string;
+	total: number;
 }
 export const cacheEntities = (payload: CacheEntitiesPayload) => ({
 	payload,
@@ -42,4 +47,8 @@ export const clearList = (payload: ClearListPayload) => ({
 export const setListProgress = (payload: SetListProgressPayload) => ({
 	payload,
 	"type": SET_LIST_PROGRESS,
+});
+export const setListTotal = (payload: SetListTotalPayload) => ({
+	payload,
+	"type": SET_LIST_TOTAL,
 });

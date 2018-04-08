@@ -8,7 +8,11 @@ export interface Props {
 	onRetry?: () => void;
 	progress: Progress;
 }
-const ProgressIndicator: React.SFC<Props> = ({ children, onRetry, progress }) => {
+const ProgressIndicator: React.SFC<Props> = ({
+	children,
+	onRetry,
+	progress,
+}) => {
 	switch (progress.status) {
 		case "success": {
 			return (
@@ -25,7 +29,7 @@ const ProgressIndicator: React.SFC<Props> = ({ children, onRetry, progress }) =>
 		}
 		default: {
 			const props: SnackbarProps = {
-				"message": (<span>String(progress.error) || "An error occurred."</span>),
+				"message": (<span>{String(progress.error) || "An error occurred."}</span>),
 				"open": true,
 			};
 			if (onRetry) {

@@ -7,7 +7,9 @@ import {
 	CLEAR_LIST,
 	ClearListPayload,
 	SET_LIST_PROGRESS,
+	SET_LIST_TOTAL,
 	SetListProgressPayload,
+	SetListTotalPayload,
 } from "../actions/entities";
 import { Entity } from "../types/Entity";
 import { ProgressiveList } from "../types/ProgressiveList";
@@ -108,6 +110,21 @@ export default (state: State, action: Action<{}>) => {
 					[listID]: {
 						...list,
 						progress,
+					},
+				},
+			};
+		}
+		case SET_LIST_TOTAL: {
+			const { listID, total } = action.payload as SetListTotalPayload;
+			const { lists } = state;
+			const list = lists[listID];
+			return {
+				...state,
+				"lists": {
+					...lists,
+					[listID]: {
+						...list,
+						total,
 					},
 				},
 			};
