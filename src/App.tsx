@@ -5,7 +5,7 @@ import * as React from "react";
 import Browse from "./features/browse/container";
 const App: React.SFC = () => (
 	<div>
-		<AppBar position="static">
+		<AppBar position="sticky">
 			<Toolbar>
 				<Typography variant="title" color="inherit">
 					PhyloPic
