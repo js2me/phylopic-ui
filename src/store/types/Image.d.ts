@@ -1,16 +1,10 @@
-interface ImageBase {
-    attribution: string;
-    licenseURL: string;
-    modified: string;
-    name_uids: string[];
-    submitted: string;
-    submitter_uid: string;
+export interface Image {
+	attribution: string;
+	licenseURL: string;
+	modified: string;
+	name_uids: string[];
+	originalSize: [number, number];
+	submitted: string;
+	submitter_uid: string;
+	vector: boolean;
 }
-interface RasterImage extends ImageBase {
-    originalSize: [number, number];
-}
-interface VectorImage extends ImageBase {
-    vector: true;
-}
-export type Image = RasterImage | VectorImage;
-

@@ -13,7 +13,7 @@ export interface SetLightboxImagePayload {
 	imageUID?: string;
 }
 export interface SetLightboxPayload {
-	image?: (Entity & Image) | null;
+	imageUID?: string | null;
 	progress?: Progress;
 }
 export const setLightbox = (payload: SetLightboxPayload) => ({
@@ -27,10 +27,11 @@ const isCompleteImage = (image: Partial<Image>) => {
 		"licenseURL",
 		"modified",
 		"name_uids",
+		"originalSize",
 		"submitted",
 		"submitter_uid",
-	].every(key => keys.has(key))
-		&& (keys.has("vector") || keys.has("originalSize"));
+		"vector",
+	].every(key => keys.has(key));
 };
 const getOriginalSize = (image: LegacyImage) => {
 	const largest = image.pngFiles.reduce((max: PNGFile | null, file) => max ? (file.width > max.width ? file : max) : file, null);
@@ -45,7 +46,7 @@ export const setLightboxImage = (payload: SetLightboxImagePayload) => async(disp
 		const { imageUID } = payload;
 		if (!imageUID) {
 			dispatch(setLightbox({
-				"image": null,
+				"imageUID": null,
 				"progress": {
 					"status": "success",
 				},
@@ -70,10 +71,11 @@ export const setLightboxImage = (payload: SetLightboxImagePayload) => async(disp
 				"licenseURL": legacyImage.licenseURL,
 				"modified": legacyImage.modified,
 				"name_uids": legacyImage.taxa.map(taxon => taxon.canonicalName!.uid),
+				"originalSize": getOriginalSize(legacyImage),
 				"submitted": legacyImage.submitted,
 				"submitter_uid": legacyImage.submitter.uid,
 				"uid": imageUID,
-				...(legacyImage.svgFile ? { "vector": true } : { "originalSize": getOriginalSize(legacyImage) }),
+				"vector": Boolean(legacyImage.svgFile),
 			};
 			const names: Array<Entity & Partial<Name>> = legacyImage.taxa.map(taxon => taxon.canonicalName!);
 			const submitter: Entity & Partial<User> = legacyImage.submitter;
@@ -90,7 +92,7 @@ export const setLightboxImage = (payload: SetLightboxImagePayload) => async(disp
 		return;
 	}
 	dispatch(setLightbox({
-		image,
+		"imageUID": image ? image.uid : null,
 		"progress": {
 			"status": "success",
 		},
