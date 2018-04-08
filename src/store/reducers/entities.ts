@@ -6,6 +6,8 @@ import {
 	CacheEntitiesPayload,
 	CLEAR_LIST,
 	ClearListPayload,
+	SET_LIST_PROGRESS,
+	SetListProgressPayload,
 } from "../actions/entities";
 import { Entity } from "../types/Entity";
 import { ProgressiveList } from "../types/ProgressiveList";
@@ -45,16 +47,20 @@ export default (state: State, action: Action<{}>) => {
 				return state;
 			}
 			const offset = start || 0;
-			const list = state.lists[listID];
+			const { lists } = state;
+			const list = lists[listID];
 			const uids = [...list.uids];
 			entities.forEach((entity, index) => uids[offset + index] = entity.uid);
 			return {
 				...state,
-				[listID]: {
-					...list,
-					"total": total === undefined ? list.total : total,
-					uids,
-				},
+				"lists": {
+					...lists,
+					[listID]: {
+						...list,
+						"total": total === undefined ? list.total : total,
+						uids,
+					},
+				}
 			};
 		}
 		case CACHE_ENTITIES: {
@@ -77,13 +83,32 @@ export default (state: State, action: Action<{}>) => {
 		}
 		case CLEAR_LIST: {
 			const { listID, start } = action.payload as ClearListPayload;
-			const list = state.lists[listID];
+			const { lists } = state;
+			const list = lists[listID];
 			const uids = list.uids.slice(0, start || 0);
 			return {
 				...state,
-				[listID]: {
-					...list,
-					uids,
+				"lists": {
+					...lists,
+					[listID]: {
+						...list,
+						uids,
+					},
+				},
+			};
+		}
+		case SET_LIST_PROGRESS: {
+			const { listID, progress } = action.payload as SetListProgressPayload;
+			const { lists } = state;
+			const list = lists[listID];
+			return {
+				...state,
+				"lists": {
+					...lists,
+					[listID]: {
+						...list,
+						progress,
+					},
 				},
 			};
 		}

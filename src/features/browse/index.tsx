@@ -20,7 +20,7 @@ const Browse: React.SFC<Props> = ({
 			<GridList cols={COLUMNS}>
 				{
 					images.map(image => (
-						<GridTile>
+						<GridTile key={image.uid}>
 							<Thumbnail image={image} />
 						</GridTile>
 					))

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 import { getImages } from "../../store/actions/browse";
 import { State } from "../../store/reducers";
 import { Entity } from "../../store/types/Entity";
@@ -12,7 +13,7 @@ interface StateProps {
 	progress: Progress;
 }
 interface DispatchProps {
-	getImages: typeof getImages;
+	dispatch: Dispatch<State>;
 }
 type Props = StateProps & DispatchProps;
 const mapStateToProps = (state: State) => {
@@ -23,12 +24,10 @@ const mapStateToProps = (state: State) => {
 		progress,
 	};
 };
-const mapDispatchToProps = () => ({
-	getImages,
-});
+const mapDispatchToProps = (dispatch: Dispatch<State>) => ({ dispatch });
 class BrowseContainer extends React.Component<Props> {
-	public componentWillMount() {
-		this.props.getImages(0, INITIAL_SIZE);
+	public async componentWillMount() {
+		return this.props.dispatch(getImages(0, INITIAL_SIZE));
 	}
 	public render() {
 		const { images, progress } = this.props;

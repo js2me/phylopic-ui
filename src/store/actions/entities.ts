@@ -1,8 +1,10 @@
 import { Dispatch } from "redux";
 import { Entity } from "../types/Entity";
+import { Progress } from "../types/Progress";
 export const ADD_TO_LIST = "ADD_TO_LIST";
 export const CACHE_ENTITIES = "CACHE_ENTITIES";
 export const CLEAR_LIST = "CLEAR_LIST";
+export const SET_LIST_PROGRESS = "SET_LIST_PROGRESS";
 import { State } from "../reducers";
 export interface AddToListPayload {
 	entities: Entity[];
@@ -16,6 +18,10 @@ export interface CacheEntitiesPayload {
 export interface ClearListPayload {
 	listID: string;
 	start?: number;
+}
+export interface SetListProgressPayload {
+	listID: string;
+	progress: Progress;
 }
 export const cacheEntities = (payload: CacheEntitiesPayload) => ({
 	payload,
@@ -32,4 +38,8 @@ export const addToList = (payload: AddToListPayload) => (dispatch: Dispatch<Stat
 export const clearList = (payload: ClearListPayload) => ({
 	payload,
 	"type": CLEAR_LIST,
+});
+export const setListProgress = (payload: SetListProgressPayload) => ({
+	payload,
+	"type": SET_LIST_PROGRESS,
 });
