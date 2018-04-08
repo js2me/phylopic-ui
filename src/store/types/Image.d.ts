@@ -1,9 +1,8 @@
 interface ImageBase {
     attribution: string;
-    general_uid: string | null;
     licenseURL: string;
     modified: string;
-    specific_uid: string;
+    name_uids: string[];
     submitted: string;
     submitter_uid: string;
 }

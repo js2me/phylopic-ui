@@ -6,8 +6,9 @@ import Thumbnail from "../Thumbnail";
 const SPACING = 40;
 export interface Props {
 	images: Array<Entity & Partial<Image>>;
+	onImageClick?: (uid: string) => void;
 }
-const ThumbnailGrid: React.SFC<Props> = ({ images }) => (
+const ThumbnailGrid: React.SFC<Props> = ({ images, onImageClick }) => (
 	<Grid
 		alignContent="center"
 		alignItems="center"
@@ -23,7 +24,10 @@ const ThumbnailGrid: React.SFC<Props> = ({ images }) => (
 					item={true}
 					key={image.uid}
 				>
-					<Thumbnail image={image} />
+					<Thumbnail
+						image={image}
+						onClick={onImageClick ? () => onImageClick(image.uid) : undefined}
+					/>
 				</Grid>
 			))
 		}

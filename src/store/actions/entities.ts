@@ -4,6 +4,7 @@ import { Progress } from "../types/Progress";
 export const ADD_TO_LIST = "ADD_TO_LIST";
 export const CACHE_ENTITIES = "CACHE_ENTITIES";
 export const CLEAR_LIST = "CLEAR_LIST";
+export const GET_CACHED_ENTITY = "GET_CACHED_ENTITY";
 export const SET_LIST_PROGRESS = "SET_LIST_PROGRESS";
 export const SET_LIST_TOTAL = "SET_LIST_TOTAL";
 import { State } from "../reducers";
@@ -19,6 +20,9 @@ export interface CacheEntitiesPayload {
 export interface ClearListPayload {
 	listID: string;
 	start?: number;
+}
+export interface GetCachedEntityPayload {
+	uid: string;
 }
 export interface SetListProgressPayload {
 	listID: string;
@@ -44,6 +48,9 @@ export const clearList = (payload: ClearListPayload) => ({
 	payload,
 	"type": CLEAR_LIST,
 });
+export const getCachedEntity = (payload: GetCachedEntityPayload) =>
+	(dispatch: Dispatch<State>, getState: () => State) =>
+		getState().entities.byUID[payload.uid];
 export const setListProgress = (payload: SetListProgressPayload) => ({
 	payload,
 	"type": SET_LIST_PROGRESS,

@@ -8,12 +8,14 @@ import { Image } from "../../store/types/Image";
 import { Progress } from "../../store/types/Progress";
 export interface Props {
 	images: Array<Entity & Partial<Image>>;
+	onImageClick: (uid: string) => void;
 	onLoadNext: () => void;
 	progress: Progress;
 	total: number;
 }
 const Browse: React.SFC<Props> = ({
 	images,
+	onImageClick,
 	onLoadNext,
 	progress,
 	total,
@@ -26,7 +28,10 @@ const Browse: React.SFC<Props> = ({
 			style={{ "textAlign": "center", "width": "100%" }}
 		>
 			<Chip label={isNaN(total) ? "…" : total}/>
-			<ThumbnailGrid images={images} />
+			<ThumbnailGrid
+				images={images}
+				onImageClick={onImageClick}
+			/>
 		</InfiniteScroll>
 	);
 export default Browse;

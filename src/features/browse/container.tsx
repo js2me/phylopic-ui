@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { getImages } from "../../store/actions/browse";
+import { setLightboxImage } from "../../store/actions/lightbox";
 import { State } from "../../store/reducers";
 import { Entity } from "../../store/types/Entity";
 import { Image } from "../../store/types/Image";
@@ -40,6 +41,7 @@ class BrowseContainer extends React.Component<Props> {
 		return (
 			<Browse
 				images={images}
+				onImageClick={this.openLightbox}
 				onLoadNext={this.loadNext}
 				progress={progress}
 				total={total}
@@ -50,6 +52,10 @@ class BrowseContainer extends React.Component<Props> {
 		const { dispatch, images } = this.props;
 		const size = getVisibleRows() * getVisibleColumns();
 		return dispatch(getImages(images.length, Math.max(MIN_LOAD_SIZE, size)));
+	}
+	private readonly openLightbox = async(imageUID: string) => {
+		const { dispatch } = this.props;
+		return dispatch(setLightboxImage({ imageUID }));
 	}
 }
 export default connect(
