@@ -1,37 +1,38 @@
-import Modal from "material-ui/Modal";
+import Dialog, { DialogContent } from "material-ui/Dialog";
 import * as React from "react";
 import ProgressIndicator from "../../shared/ProgressIndicator";
 import { Entity } from "../../store/types/Entity";
-import { Image } from "../../store/types/Image";
+import { Image as ImageModel } from "../../store/types/Image";
+import { Name } from "../../store/types/Name";
 import { Progress } from "../../store/types/Progress";
+import Image from "./Image";
+import Taxonomy from "./Taxonomy";
 export interface DispatchProps {
 	onClose: () => void;
 }
 export interface StateProps {
-	image: Readonly<Entity & Image> | null;
+	image: Readonly<Entity & ImageModel> | null;
+	names: ReadonlyArray<Entity & Pick<Name, "html">> | null;
 	progress: Progress;
 }
-const renderImage = (image: Readonly<Entity & Image> | null) => {
-	if (image) {
-		const src = `http://phylopic.org/assets/images/submissions/${image.uid}.${image.vector ? "svg" : "original.png"}`;
-		return (
-			<img src={src} />
-		);
-	}
-	return undefined;
-};
 const Lightbox: React.SFC<DispatchProps & StateProps> = ({
 	image,
+	names,
 	onClose,
 	progress,
 }) => (
-		<Modal
+		<Dialog
+			fullWidth={true}
+			maxWidth="md"
 			open={Boolean(image) || progress.status !== "success"}
 			onClose={onClose}
 		>
-			<ProgressIndicator progress={progress}>
-				{renderImage(image)}
-			</ProgressIndicator>
-		</Modal>
+			<DialogContent>
+				<ProgressIndicator progress={progress}>
+					{names && <Taxonomy names={names}/>}
+					{image && <Image image={image}/>}
+				</ProgressIndicator>
+			</DialogContent>
+		</Dialog>
 	);
 export default Lightbox;

@@ -4,13 +4,23 @@ import { setLightboxImage } from "../../store/actions/lightbox";
 import { State } from "../../store/reducers";
 import { Entity } from "../../store/types/Entity";
 import { Image } from "../../store/types/Image";
+import { Name } from "../../store/types/Name";
 import Lightbox, { DispatchProps, StateProps } from "./";
 const mapStateToProps = (state: State) => {
+	const { byUID } = state.entities;
+	const { imageUID, progress } = state.lightbox;
+	const image = imageUID
+		? (byUID[imageUID] as Readonly<Entity & Image> || null)
+		: null;
+	const names = image
+		? image.name_uids
+			.map(uid => byUID[uid] as Readonly<Entity & Pick<Name, "html">>)
+			.filter(Boolean)
+		: null;
 	const props: StateProps = {
-		"image": state.lightbox.imageUID
-			? (state.entities.byUID[state.lightbox.imageUID] as Readonly<Entity & Image> || null)
-			: null,
-		"progress": state.lightbox.progress,
+		image,
+		names,
+		progress,
 	};
 	return props;
 };
