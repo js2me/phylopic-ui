@@ -1,6 +1,6 @@
-import { Dispatch } from "redux";
-import { State } from "../reducers";
-import { Filter, ListParams } from "../types/ListParams";
+// import { Dispatch } from "redux";
+// import { State } from "../reducers";
+// import { Filter, ListParams } from "../types/ListParams";
 export class ResponseError extends Error {
 	constructor(public readonly response: Response) {
 		super(response.statusText);
@@ -19,6 +19,7 @@ export const fetchJSON = <T>(url: string, init: RequestInit) => async() => {
 	const result: T = await response.json();
 	return result;
 };
+/*
 const filterToEntry = <T, F extends keyof T>(filter: Filter<T, F>) => {
 	const writeOperation = () => {
 		switch (filter.operation) {
@@ -79,3 +80,4 @@ export const fetchList = <T>(endpoint: string, params: ListParams<T>) => async(d
 	};
 	return dispatch(fetchJSON<T[]>(`${endpoint}?${queryString}`, init));
 };
+*/

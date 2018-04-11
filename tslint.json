@@ -116,7 +116,7 @@
 			true,
 			"allow-declarations"
 		],
-		"no-object-literal-type-assertion": true,
+		"no-object-literal-type-assertion": false,
 		"no-parameter-properties": false,
 		"no-redundant-jsdoc": true,
 		"no-reference": true,

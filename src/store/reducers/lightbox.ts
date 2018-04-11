@@ -1,27 +1,23 @@
-import { Action } from "../actions/Action";
 import {
-	SET_LIGHTBOX,
-	SetLightboxPayload,
+	Action,
+	Types,
 } from "../actions/lightbox";
 import { Progress } from "../types/Progress";
 export interface State {
-	imageUID: string | null;
-	progress: Progress;
+	readonly imageUID: string | null;
+	readonly progress: Readonly<Progress>;
 }
-export default (state: State, action: Action<{}>) => {
+export default (state: State, action: Action) => {
+	if (action.type === Types.SET_LIGHTBOX) {
+		return action.payload;
+	}
 	if (!state) {
-		state = {
+		return {
 			"imageUID": null,
 			"progress": {
-				"status": "success",
+				"error": null,
+				"pending": false,
 			}
-		};
-	}
-	if (action.type === SET_LIGHTBOX) {
-		const { imageUID, progress } = action.payload as SetLightboxPayload;
-		state = {
-			"imageUID": imageUID === undefined ? state.imageUID : imageUID,
-			"progress": progress || state.progress,
 		};
 	}
 	return state;

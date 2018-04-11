@@ -13,40 +13,27 @@ const ProgressIndicator: React.SFC<Props> = ({
 	onRetry,
 	progress,
 }) => {
-	switch (progress.status) {
-		case "success": {
-			return (
-				<div>{children}</div>
-			);
-		}
-		case "pending": {
-			return (
-				<CircularProgress
-					max={progress.total}
-					value={progress.loaded}
-				/>
-			);
-		}
-		default: {
-			const props: SnackbarProps = {
-				"message": (<span>{String(progress.error) || "An error occurred."}</span>),
-				"open": true,
-			};
-			if (onRetry) {
-				props.action = (
-					<Button
-						color="secondary"
-						onClick={onRetry}
-						size="small"
-					>
-						Try Again
-					</Button>
-				);
-			}
-			return (
-				<Snackbar {...props} />
-			);
-		}
+	if (progress.pending) {
+		return <CircularProgress/>;
 	}
+	if (progress.error) {
+		const props: SnackbarProps = {
+			"message": (<span>{String(progress.error) || "An error occurred."}</span>),
+			"open": true,
+		};
+		if (onRetry) {
+			props.action = (
+				<Button
+					color="secondary"
+					onClick={onRetry}
+					size="small"
+				>
+					Try Again
+				</Button>
+			);
+		}
+		return <Snackbar {...props} />;
+	}
+	return <div>{children}</div>;
 };
 export default ProgressIndicator;

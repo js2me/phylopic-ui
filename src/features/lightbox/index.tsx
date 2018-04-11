@@ -24,7 +24,7 @@ const Lightbox: React.SFC<DispatchProps & StateProps> = ({
 		<Dialog
 			fullWidth={true}
 			maxWidth="md"
-			open={Boolean(image) || progress.status !== "success"}
+			open={progress.pending || Boolean(image || progress.error)}
 			onClose={onClose}
 		>
 			<DialogContent>

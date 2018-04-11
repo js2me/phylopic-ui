@@ -12,11 +12,13 @@ const ITEM_WIDTH = 104;
 const getVisibleColumns = () =>  Math.floor(window.innerWidth / ITEM_WIDTH);
 const getVisibleRows = () =>  Math.ceil(window.innerHeight / ITEM_HEIGHT);
 const mapStateToProps = (state: State) => {
-	const { progress, total, uids } = state.entities.lists.browse;
-	const { byUID } = state.entities;
+	const { total, uids } = state.search.browse || {
+		"total": NaN,
+		"uids": [],
+	};
+	const { entities } = state;
 	const props: StateProps = {
-		"images": uids.map(uid => byUID[uid] as Entity & Partial<Image>),
-		progress,
+		"images": uids.map(uid => entities[uid] as Entity & Partial<Image>),
 		total,
 	};
 	return props;

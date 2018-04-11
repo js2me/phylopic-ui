@@ -7,14 +7,14 @@ import { Image } from "../../store/types/Image";
 import { Name } from "../../store/types/Name";
 import Lightbox, { DispatchProps, StateProps } from "./";
 const mapStateToProps = (state: State) => {
-	const { byUID } = state.entities;
+	const { entities } = state;
 	const { imageUID, progress } = state.lightbox;
 	const image = imageUID
-		? (byUID[imageUID] as Readonly<Entity & Image> || null)
+		? (entities[imageUID] as Readonly<Entity & Image> || null)
 		: null;
 	const names = image
 		? image.name_uids
-			.map(uid => byUID[uid] as Readonly<Entity & Pick<Name, "html">>)
+			.map(uid => entities[uid] as Readonly<Entity & Pick<Name, "html">>)
 			.filter(Boolean)
 		: null;
 	const props: StateProps = {
