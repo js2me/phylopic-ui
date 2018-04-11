@@ -3,14 +3,10 @@ import { Dispatch } from "redux";
 import { countLoadedImages, getImages } from "../../store/actions/browse";
 import { setLightboxImage } from "../../store/actions/lightbox";
 import { State } from "../../store/reducers";
-import { Entity } from "../../store/types/Entity";
-import { Image } from "../../store/types/Image";
 import Browse, { DispatchProps, StateProps } from "./";
 const MIN_LOAD_SIZE = 12;
 const ITEM_HEIGHT = 108;
 const ITEM_WIDTH = 104;
-const getVisibleColumns = () =>  Math.floor(window.innerWidth / ITEM_WIDTH);
-const getVisibleRows = () =>  Math.ceil(window.innerHeight / ITEM_HEIGHT);
 const mapStateToProps = (state: State) => {
 	const { total, uids } = state.search.browse || {
 		"total": NaN,
@@ -18,7 +14,7 @@ const mapStateToProps = (state: State) => {
 	};
 	const { entities } = state;
 	const props: StateProps = {
-		"images": uids.map(uid => entities[uid] as Entity & Partial<Image>),
+		"images": uids.map(uid => entities[uid]),
 		total,
 	};
 	return props;
@@ -28,8 +24,9 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) => {
 		"onImageClick": async(imageUID: string) => dispatch(setLightboxImage({ imageUID })),
 		"onLoadNext": async() => {
 			const count = dispatch(countLoadedImages());
-			const size = getVisibleRows() * getVisibleColumns();
-			return dispatch(getImages(count, Math.max(MIN_LOAD_SIZE, size)));
+			const rows = Math.ceil(window.innerHeight / ITEM_HEIGHT);
+			const columns = Math.floor(window.innerWidth / ITEM_WIDTH);
+			return dispatch(getImages(count, Math.max(MIN_LOAD_SIZE, rows * columns)));
 		},
 	};
 	return props;

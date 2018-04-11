@@ -24,9 +24,10 @@ class Browse extends React.Component<DispatchProps & StateProps> {
 			onLoadNext,
 			total,
 		} = this.props;
+		const { length } = images;
 		return (
 			<InfiniteScroll
-				hasMore={total <= images.length}
+				hasMore={length < total}
 				loadMore={onLoadNext}
 				loader={(<CircularProgress />)}
 				pageStart={0}
@@ -37,6 +38,7 @@ class Browse extends React.Component<DispatchProps & StateProps> {
 					images={images}
 					onImageClick={onImageClick}
 				/>
+				{!length && <CircularProgress/>}
 			</InfiniteScroll>
 		);
 	}
