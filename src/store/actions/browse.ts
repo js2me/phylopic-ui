@@ -33,6 +33,5 @@ export const getImages = (start: number, size: number) =>
 			return dispatch(completeSearch({ entities, key, total }));
 		} catch (error) {
 			dispatch(failSearch({ error, key }));
-			throw error;
 		}
 	};

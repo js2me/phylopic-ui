@@ -68,7 +68,7 @@ export const fetchLegacy = async <R>(dispatch: Dispatch<{}>, url: string, init?:
 			"method": "GET",
 		};
 	}
-	const response = await dispatch(fetchJSON<Response<R>>(url, init));
+	const response = await dispatch(fetchJSON<Response<R>>({init, url}));
 	if (!response.success) {
 		throw new Error(response.fault.message);
 	}

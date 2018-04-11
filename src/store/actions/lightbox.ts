@@ -80,8 +80,7 @@ export const setLightboxImage = (payload: { imageUID?: string; }) =>
 				};
 				const names: Array<Entity & Partial<Name>> = legacyImage.taxa.map(taxon => taxon.canonicalName!);
 				const submitter: Entity & Partial<User> = legacyImage.submitter;
-				const entities: Entity[] = [image, submitter, ...names];
-				dispatch(addEntities(entities));
+				dispatch(addEntities([image, submitter, ...names]));
 			}
 		} catch (error) {
 			dispatch(setLightbox({

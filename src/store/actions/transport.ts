@@ -6,13 +6,15 @@ export class ResponseError extends Error {
 		super(response.statusText);
 	}
 }
-export const fetchJSON = <T>(url: string, init: RequestInit) => async() => {
-	init.headers = new Headers({
-		"Accept": "application/json",
-		"Accept-Charset": "utf-8",
-		...(init.headers || {}),
-	});
-	const response = await fetch(url, init);
+export const fetchJSON = <T>(payload: {
+	init: RequestInit,
+	url: string,
+}) => async() => {
+	const { init, url } = payload;
+	const headers = new Headers(init.headers);
+	headers.append("Accept", "application/json");
+	headers.append("Accept-Charset", "utf-8");
+	const response = await fetch(url, {...init, headers});
 	if (!response.ok) {
 		throw new ResponseError(response);
 	}

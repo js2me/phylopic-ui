@@ -29,11 +29,11 @@ class Browse extends React.Component<DispatchProps & StateProps> {
 			<InfiniteScroll
 				hasMore={length < total}
 				loadMore={onLoadNext}
-				loader={(<CircularProgress />)}
+				loader={(<CircularProgress/>)}
 				pageStart={0}
 				style={{ "textAlign": "center", "width": "100%" }}
 			>
-				<Chip label={isNaN(total) ? "…" : total} />
+				{!isNaN(total) && <div><Chip label={total}/> images in the database.</div>}
 				<ThumbnailGrid
 					images={images}
 					onImageClick={onImageClick}
