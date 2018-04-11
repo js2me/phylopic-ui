@@ -17,19 +17,15 @@ const mapStateToProps = (state: State) => {
 			.map(uid => entities[uid] as Readonly<Entity & Pick<Name, "html">>)
 			.filter(Boolean)
 		: null;
-	const props: StateProps = {
+	return {
 		image,
 		names,
 		progress,
-	};
-	return props;
+	} as StateProps;
 };
-const mapDispatchToProps = (dispatch: Dispatch<State>) => {
-	const props: DispatchProps = {
-		"onClose": async() => dispatch(setLightboxImage({})),
-	};
-	return props;
-};
+const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
+	"onClose": async() => dispatch(setLightboxImage({})),
+} as DispatchProps);
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps,
