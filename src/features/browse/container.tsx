@@ -3,18 +3,15 @@ import { Dispatch } from "redux";
 import { countLoadedImages, getImages } from "../../store/actions/browse";
 import { setLightboxImage } from "../../store/actions/lightbox";
 import { State } from "../../store/reducers";
+import { imagesSelector } from "../../store/selectors/browse";
 import Browse, { DispatchProps, StateProps } from "./";
 const MIN_LOAD_SIZE = 12;
 const ITEM_HEIGHT = 108;
 const ITEM_WIDTH = 104;
 const mapStateToProps = (state: State) => {
-	const { total, uids } = state.search.browse || {
-		"total": NaN,
-		"uids": [],
-	};
-	const { entities } = state;
+	const { total } = state.search.browse || { "total": NaN };
 	const props: StateProps = {
-		"images": uids.map(uid => entities[uid]),
+		"images": imagesSelector(state),
 		total,
 	};
 	return props;

@@ -3,7 +3,7 @@ import * as React from "react";
 import { Entity } from "../../store/types/Entity";
 import { Image as ImageModel } from "../../store/types/Image";
 export interface Props {
-	image: Readonly<Entity & Pick<ImageModel, "originalSize" | "vector">>;
+	image: Readonly<Entity & Pick<ImageModel, "vector">>;
 }
 const Image: React.SFC<Props> = ({ image }) => {
 	const src = `http://phylopic.org/assets/images/submissions/${image.uid}.${image.vector ? "svg" : "original.png"}`;
