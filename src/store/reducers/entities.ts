@@ -3,13 +3,14 @@ import {
 	Types,
 } from "../actions/entities";
 import { Entity } from "../types/Entity";
+import { State as AppState } from "./";
 export type State = Readonly<Record<string, Entity>>;
 export default (state: State, action: Action) => {
 	if (!state) {
 		state = {};
 	}
 	switch (action.type) {
-		case Types.ENTITIES_ADD: {
+		case Types.ADD: {
 			const newState = { ...state };
 			for (const entity of action.payload) {
 				const { uid } = entity;
@@ -18,7 +19,7 @@ export default (state: State, action: Action) => {
 			}
 			return newState;
 		}
-		case Types.ENTITIES_DELETE: {
+		case Types.DELETE: {
 			const newState = { ...state };
 			for (const uid of action.payload) {
 				delete newState[uid];
@@ -30,3 +31,5 @@ export default (state: State, action: Action) => {
 		}
 	}
 };
+// SELECTORS
+export const getEntities = (state: AppState) => state.entities;

@@ -2,16 +2,16 @@ import { Dispatch } from "redux";
 import { State } from "../reducers";
 import { Entity } from "../types/Entity";
 export enum Types {
-	ENTITIES_ADD = "ENTITIES_ADD",
-	ENTITIES_DELETE = "ENTITIES_DELETE",
+	ADD = "entities/ADD",
+	DELETE = "entities/DELETE",
 }
 export const addEntities = (payload: Iterable<Entity>) => ({
 	payload,
-	"type": Types.ENTITIES_ADD as Types.ENTITIES_ADD,
+	"type": Types.ADD as Types.ADD,
 });
 export const deleteEntities = (payload: Iterable<string>) => ({
 	payload,
-	"type": Types.ENTITIES_DELETE as Types.ENTITIES_DELETE,
+	"type": Types.DELETE as Types.DELETE,
 });
 export const getEntities = <T>(payload: Iterable<string>) =>
 	(dispatch: Dispatch<State>, getState: () => State) => {

@@ -1,36 +1,56 @@
-import Grid from "material-ui/Grid";
 import * as React from "react";
+import { Grid, GridCellProps } from "react-virtualized/dist/es/Grid";
 import { Entity } from "../../store/types/Entity";
 import { Image } from "../../store/types/Image";
-import Thumbnail from "../Thumbnail";
-const SPACING = 40;
+import Thumbnail, { Props as ThumbnailProps } from "../Thumbnail";
+const CELL_HEIGHT = 108;
+const CELL_WIDTH = 104;
+const COLUMN_COUNT = 12;
 export interface Props {
+	height: number;
 	images: ReadonlyArray<Entity & Partial<Image>>;
 	onImageClick?: (uid: string) => void;
+	width: number;
 }
-const ThumbnailGrid: React.SFC<Props> = ({ images, onImageClick }) => (
+type CellProps = GridCellProps & Pick<Props, "images" | "onImageClick">;
+const Cell: React.SFC<CellProps> = ({
+	columnIndex,
+	images,
+	isVisible,
+	key,
+	onImageClick,
+	rowIndex,
+}) => {
+	if (!isVisible) {
+		return <div key={key}/>;
+	}
+	const image = images[rowIndex * COLUMN_COUNT + columnIndex];
+	const props: ThumbnailProps = { image };
+	if (onImageClick) {
+		props.onClick = () => onImageClick(image.uid);
+	}
+	return <Thumbnail {...props} key={key}/>;
+};
+const ThumbnailGrid: React.SFC<Props> = ({
+	height,
+	images,
+	onImageClick,
+	width,
+}) => (
 	<Grid
-		alignContent="center"
-		alignItems="center"
-		container={true}
-		justify="center"
-		key="grid"
-		spacing={SPACING}
+		cellRenderer={props => {
+			const { columnIndex, rowIndex } = props;
+			const key = images[rowIndex * COLUMN_COUNT + columnIndex].uid;
+			const cellProps: CellProps = {...props, ...{images, key}};
+			return <Cell {...cellProps}/>;
+		}}
+		columnCount={COLUMN_COUNT}
+		columnWidth={CELL_WIDTH}
+		height={height}
+		rowCount={Math.ceil(images.length / COLUMN_COUNT)}
+		rowHeight={CELL_HEIGHT}
 		style={{ "marginBottom": "2rem" }}
-	>
-		{
-			images.map(image => (
-				<Grid
-					item={true}
-					key={image.uid}
-				>
-					<Thumbnail
-						image={image}
-						onClick={onImageClick ? () => onImageClick(image.uid) : undefined}
-					/>
-				</Grid>
-			))
-		}
-	</Grid>
+		width={width}
+	/>
 );
 export default ThumbnailGrid;

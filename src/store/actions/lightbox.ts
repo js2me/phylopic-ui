@@ -5,7 +5,7 @@ import { Name } from "../types/Name";
 import { Progress } from "../types/Progress";
 import { User } from "../types/User";
 export enum Types {
-	SET_LIGHTBOX = "SET_LIGHTBOX",
+	SET = "lightbox/SET",
 }
 import { State } from "../reducers";
 import { addEntities, getEntities } from "./entities";
@@ -15,7 +15,7 @@ export const setLightbox = (payload: {
 	progress: Progress;
 }) => ({
 	payload,
-	"type": Types.SET_LIGHTBOX as Types.SET_LIGHTBOX,
+	"type": Types.SET as Types.SET,
 });
 const isCompleteImage = (image: Partial<Image>) => {
 	const keys = new Set(Object.keys(image));

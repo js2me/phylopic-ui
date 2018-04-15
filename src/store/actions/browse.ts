@@ -13,7 +13,7 @@ export const countLoadedImages = () =>
 			? search.uids.length
 			: 0;
 	};
-export const getImages = (start: number, size: number) =>
+export const loadImages = (start: number, size: number) =>
 	async(dispatch: Dispatch<State>, getState: () => State) => {
 		const search = getState().search[key];
 		if (search && search.pending) {

@@ -18,7 +18,7 @@ export default (state: State, action: Action) => {
 		state = {};
 	}
 	switch (action.type) {
-		case Types.SEARCH_FAIL: {
+		case Types.FAIL: {
 			const { error, key } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
@@ -30,7 +30,7 @@ export default (state: State, action: Action) => {
 				}
 			} as State;
 		}
-		case Types.SEARCH_RESET: {
+		case Types.RESET: {
 			const { key } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
@@ -42,7 +42,7 @@ export default (state: State, action: Action) => {
 				}
 			} as State;
 		}
-		case Types.SEARCH_START: {
+		case Types.START: {
 			const { key } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
@@ -54,7 +54,7 @@ export default (state: State, action: Action) => {
 				}
 			} as State;
 		}
-		case Types.SEARCH_SUCCEED: {
+		case Types.SUCCEED: {
 			const { key, total, uids } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
@@ -67,7 +67,7 @@ export default (state: State, action: Action) => {
 				}
 			} as State;
 		}
-		case Types.SEARCH_UPDATE: {
+		case Types.UPDATE: {
 			const { fields, filters, key, sort } = action.payload;
 			const previous = state[key] || createSearch();
 			return {

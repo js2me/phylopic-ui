@@ -6,15 +6,12 @@
 	},
 	"name": "phylopic-ui",
 	"dependencies": {
-		"@types/react-infinite-scroller": "^1.0.6",
-		"@types/react-redux": "^5.0.15",
-		"@types/redux-actions": "^2.2.4",
-		"@types/redux-thunk": "^2.1.0",
 		"material-ui": "1.0.0-beta.41",
 		"react": "^16.3.1",
 		"react-dom": "^16.3.1",
 		"react-infinite-scroller": "^1.1.3",
 		"react-redux": "^5.0.7",
+		"react-virtualized": "^9.18.5",
 		"redux": "^3.7.2",
 		"redux-thunk": "^2.2.0",
 		"reselect": "^3.0.1"
@@ -24,6 +21,11 @@
 		"@types/node": "^9.6.2",
 		"@types/react": "^16.3.5",
 		"@types/react-dom": "^16.0.4",
+		"@types/react-infinite-scroller": "^1.0.6",
+		"@types/react-redux": "^5.0.15",
+		"@types/react-virtualized": "^9.18.0",
+		"@types/redux-actions": "^2.2.4",
+		"@types/redux-thunk": "^2.1.0",
 		"react-scripts-ts": "2.14.0",
 		"typescript": "^2.8.1"
 	},
