@@ -1,8 +1,12 @@
+import { createSelector } from "reselect";
 import {
 	Action,
 	Types,
 } from "../actions/search";
+import { Entity } from "../types/Entity";
 import { Filter, Search } from "../types/Search";
+import { State as AppState } from "./";
+import { getEntities as getAllEntities } from "./entities";
 export type State = Readonly<Record<string, Readonly<Search<{}>>>>;
 const createSearch = <T>() => ({
 	"error": null,
@@ -85,3 +89,11 @@ export default (state: State, action: Action) => {
 		}
 	}
 };
+// SELECTORS
+const getUIDs = (key: string) => (state: AppState) => (state.search[key] ? state.search[key].uids : null) || [];
+export const getEntities = <T>(key: string) => createSelector(
+	getAllEntities,
+	getUIDs(key),
+	(entities, uids) => uids.map(uid => entities[uid] as Readonly<Entity & Partial<T>>),
+);
+export const getTotal = (key: string) => (state: AppState) => state.search[key] ? state.search[key].total : NaN;
