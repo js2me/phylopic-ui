@@ -3,8 +3,7 @@ import Chip from "material-ui/Chip";
 import Icon from "material-ui/Icon";
 import { StyleRules, withStyles, WithStyles } from "material-ui/styles";
 import * as React from "react";
-import { Entity } from "../../store/types/Entity";
-import { Name } from "../../store/types/Name";
+import { Entity, Name } from "../../stores/entities";
 const styles: (theme: Theme) => StyleRules = (theme: Theme) => ({
 	"chip": {
 		"marginBottom": theme.spacing.unit,

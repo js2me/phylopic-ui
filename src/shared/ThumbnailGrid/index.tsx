@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Grid, GridCellProps } from "react-virtualized/dist/es/Grid";
-import { Entity } from "../../store/types/Entity";
-import { Image } from "../../store/types/Image";
+import { Entity, Image } from "../../stores/entities";
 import Thumbnail, { Props as ThumbnailProps } from "../Thumbnail";
 const CELL_HEIGHT = 108;
 const CELL_WIDTH = 104;

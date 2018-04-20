@@ -3,13 +3,12 @@ import CircularProgress from "material-ui/Progress/CircularProgress";
 import * as React from "react";
 import * as InfiniteScroll from "react-infinite-scroller";
 import ThumbnailGrid from "../../shared/ThumbnailGrid";
-import { Entity } from "../../store/types/Entity";
-import { Image } from "../../store/types/Image";
+import { Entity, Image } from "../../stores/entities";
 const CELL_HEIGHT = 108;
 const CELL_WIDTH = 104;
 export interface DispatchProps {
 	onImageClick: (imageUID: string) => void;
-	onLoadNext: (numToLoad: number) => void;
+	onLoadNext: (numLoaded: number, numToLoad: number) => void;
 }
 export interface StateProps {
 	height: number;
@@ -19,14 +18,15 @@ export interface StateProps {
 }
 class Browse extends React.Component<DispatchProps & StateProps> {
 	public async componentWillMount() {
-		return this.props.onLoadNext(this.pageSize);
+		if (!this.props.images.length) {
+			return this.loadNext();
+		}
 	}
 	public render() {
 		const {
 			height,
 			images,
 			onImageClick,
-			onLoadNext,
 			total,
 			width,
 		} = this.props;
@@ -34,10 +34,9 @@ class Browse extends React.Component<DispatchProps & StateProps> {
 		return (
 			<InfiniteScroll
 				hasMore={length < total}
-				loadMore={() => onLoadNext(this.pageSize)}
+				loadMore={this.loadNext}
 				loader={(<CircularProgress/>)}
 				pageStart={0}
-				style={{ "textAlign": "center", "width": "100%" }}
 			>
 				{!isNaN(total) && <div><Chip label={total}/> images in the database.</div>}
 				<ThumbnailGrid
@@ -50,14 +49,11 @@ class Browse extends React.Component<DispatchProps & StateProps> {
 			</InfiniteScroll>
 		);
 	}
-	protected get columns() {
-		return Math.max(1, Math.floor(this.props.width / CELL_WIDTH));
-	}
-	protected get pageSize() {
-		return this.visibleRows * this.columns;
-	}
-	protected get visibleRows() {
-		return Math.max(1, Math.ceil(this.props.height / CELL_HEIGHT));
+	protected loadNext = async() => {
+		const { images, onLoadNext } = this.props;
+		const columns = Math.max(1, Math.floor(this.props.width / CELL_WIDTH));
+		const visibleRows = Math.max(1, Math.ceil(this.props.height / CELL_HEIGHT));
+		return onLoadNext(images.length, columns * visibleRows);
 	}
 }
 export default Browse;

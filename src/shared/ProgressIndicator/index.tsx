@@ -2,7 +2,7 @@ import Button from "material-ui/Button";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import Snackbar, { SnackbarProps } from "material-ui/Snackbar";
 import * as React from "react";
-import { Progress } from "../../store/types/Progress";
+import { Progress } from "../../stores/async";
 export interface Props {
 	children?: React.ReactNode;
 	onRetry?: () => void;

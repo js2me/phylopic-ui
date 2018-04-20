@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Entity } from "../../store/types/Entity";
-import { Image } from "../../store/types/Image";
+import { Entity, Image } from "../../stores/entities";
 const DIMENSION = 64;
 export interface Props {
 	image: Entity & Partial<Image>;

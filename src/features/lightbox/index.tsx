@@ -1,10 +1,8 @@
 import Dialog, { DialogContent } from "material-ui/Dialog";
 import * as React from "react";
 import ProgressIndicator from "../../shared/ProgressIndicator";
-import { Entity } from "../../store/types/Entity";
-import { Image as ImageModel } from "../../store/types/Image";
-import { Name } from "../../store/types/Name";
-import { Progress } from "../../store/types/Progress";
+import { Progress } from "../../stores/async";
+import { Entity, Image as ImageModel, Name } from "../../stores/entities";
 import Image from "./Image";
 import Taxonomy from "./Taxonomy";
 export interface DispatchProps {

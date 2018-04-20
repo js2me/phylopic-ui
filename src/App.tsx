@@ -6,8 +6,8 @@ import { connect, Dispatch } from "react-redux";
 import Browse from "./features/browse/container";
 import Lightbox from "./features/lightbox/container";
 import { getWindowSize, listenToWindowResize } from "./helpers/windowSize";
-import { set } from "./store/actions/windowSize";
-import { State } from "./store/reducers";
+import { State } from "./stores";
+import { set } from "./stores/windowSize/actions";
 export interface DispatchProps {
 	onResize: (size: [number, number]) => void;
 }
@@ -37,7 +37,7 @@ class App extends React.Component<DispatchProps> {
 }
 const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
-	"onResize": (size: [number, number]) => dispatch(set(size)),
+	"onResize": (size: Readonly<[number, number]>) => dispatch(set(size)),
 } as DispatchProps);
 export default connect(
 	mapStateToProps,

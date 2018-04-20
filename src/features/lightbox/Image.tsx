@@ -1,7 +1,6 @@
 import Paper from "material-ui/Paper";
 import * as React from "react";
-import { Entity } from "../../store/types/Entity";
-import { Image as ImageModel } from "../../store/types/Image";
+import { Entity, Image as ImageModel } from "../../stores/entities";
 export interface Props {
 	image: Readonly<Entity & Pick<ImageModel, "vector">>;
 }

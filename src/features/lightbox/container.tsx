@@ -1,8 +1,7 @@
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { setLightboxImage } from "../../store/actions/lightbox";
-import { State } from "../../store/reducers";
-import { getImage, getNames } from "../../store/reducers/lightbox";
+import { State } from "../../stores";
+import { getImage, getNames, setLightboxImage } from "../../stores/lightbox";
 import Lightbox, { DispatchProps, StateProps } from "./";
 const mapStateToProps = (state: State) => {
 	const { progress } = state.lightbox;
