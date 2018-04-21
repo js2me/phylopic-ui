@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../stores";
-import { getImage, getNames, setLightboxImage } from "../../stores/lightbox";
+import { getProgress } from "../../stores/async";
+import { getImage, getNames, getProgressKey, selectImage } from "../../stores/lightbox";
 import Lightbox, { DispatchProps, StateProps } from "./";
 const mapStateToProps = (state: State) => {
-	const { progress } = state.lightbox;
+	const key = getProgressKey(state);
+	const progress = getProgress(key)(state);
 	return {
 		"image": getImage(state),
 		"names": getNames(state),
@@ -12,7 +14,7 @@ const mapStateToProps = (state: State) => {
 	} as StateProps;
 };
 const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
-	"onClose": async() => dispatch(setLightboxImage({})),
+	"onClose": async() => dispatch(selectImage({ "imageUID": null })),
 } as DispatchProps);
 export default connect(
 	mapStateToProps,

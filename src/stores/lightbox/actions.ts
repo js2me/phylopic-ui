@@ -1,18 +1,13 @@
 import { Dispatch } from "redux";
 import { fetchLegacy, Image as LegacyImage, PNGFile } from "../../legacy/api";
-import { Progress } from "../async/Progress";
-import { Entity } from "../entities/Entity";
-import { Image } from "../entities/Image";
-import { Name } from "../entities/Name";
-import { User } from "../entities/User";
+import { fail, start, succeed } from "../async";
+import { addEntities, Entity, getEntities, Image, Name, User } from "../entities";
 export enum Types {
 	SET = "lightbox/SET",
 }
 import { State } from "../";
-import { addEntities, getEntities } from "../entities";
-export const setLightbox = (payload: {
+export const set = (payload: {
 	imageUID: string | null;
-	progress: Progress;
 }) => ({
 	payload,
 	"type": Types.SET as Types.SET,
@@ -28,7 +23,7 @@ const isCompleteImage = (image: Partial<Image>) => {
 		"submitted",
 		"submitter_uid",
 		"vector",
-	].every(key => keys.has(key));
+	].every(k => keys.has(k));
 };
 const getOriginalSize = (image: LegacyImage) => {
 	const largest = image.pngFiles.reduce((max: PNGFile | null, file) => max ? (file.width > max.width ? file : max) : file, null);
@@ -37,32 +32,22 @@ const getOriginalSize = (image: LegacyImage) => {
 	}
 	throw new Error("Invalid image.");
 };
-export const setLightboxImage = (payload: { imageUID?: string; }) =>
+export const selectImage = (payload: { imageUID: string | null; }) =>
 	async(dispatch: Dispatch<State>) => {
+		const { imageUID } = payload;
+		if (!imageUID) {
+			dispatch(set({ "imageUID": null }));
+			return;
+		}
+		const key = `lightbox/${imageUID}`;
+		dispatch(start({ key }));
 		let image: (Entity & Image) | null = null;
 		try {
-			const { imageUID } = payload;
-			if (!imageUID) {
-				dispatch(setLightbox({
-					"imageUID": null,
-					"progress": {
-						"error": null,
-						"pending": false,
-					},
-				}));
-				return;
-			}
 			const [existingImage] = dispatch(getEntities<Image>([imageUID]));
 			if (existingImage && isCompleteImage(existingImage)) {
 				image = existingImage as Entity & Image;
 			} else {
-				dispatch(setLightbox({
-					"imageUID": null,
-					"progress": {
-						"error": null,
-						"pending": true,
-					},
-				}));
+				dispatch(set({ "imageUID": null }));
 				const legacyImage = await fetchLegacy<Entity & LegacyImage>(
 					dispatch,
 					`http://phylopic.org/api/a/image/${imageUID}?options=credit+licenseURL+modified+pngFiles+submitted+submitter+svgFile+taxa+canonicalName+html+string+allowContact+email+firstName+lastName`,
@@ -83,21 +68,11 @@ export const setLightboxImage = (payload: { imageUID?: string; }) =>
 				dispatch(addEntities([image, submitter, ...names]));
 			}
 		} catch (error) {
-			dispatch(setLightbox({
-				"imageUID": null,
-				"progress": {
-					error,
-					"pending": false,
-				},
-			}));
+			dispatch(set({ "imageUID": null }));
+			dispatch(fail({ error, key }));
 			return;
 		}
-		dispatch(setLightbox({
-			"imageUID": image ? image.uid : null,
-			"progress": {
-				"error": null,
-				"pending": false,
-			},
-		}));
-	};
-export type Action = ReturnType<typeof setLightbox>;
+		dispatch(set({ imageUID }));
+		dispatch(succeed({ key }));
+};
+export type Action = ReturnType<typeof set>;

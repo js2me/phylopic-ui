@@ -6,11 +6,11 @@ import { Filter } from "./Filter";
 import { Search } from "./Search";
 import { State } from "./State";
 const createSearch = <T>() => ({
-	"error": null,
-	"fields": new Set<keyof T>(),
-	"filters": new Set<Filter<T, keyof T>>(),
-	"pending": false,
-	"sort": [],
+	"params": {
+		"fields": new Set<keyof T>(),
+		"filters": new Set<Filter<T, keyof T>>(),
+		"sort": [],
+	},
 	"total": NaN,
 	"uids": [],
 } as Search<T>);
@@ -19,65 +19,43 @@ export default (state: State, action: Action) => {
 		state = {};
 	}
 	switch (action.type) {
-		case Types.FAIL: {
-			const { error, key } = action.payload;
+		case Types.APPEND_UIDS: {
+			const { key, uids } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
 				...state,
-				[action.payload.key]: {
+				[key]: {
 					...previous,
-					error,
-					"pending": false,
-				}
-			} as State;
-		}
-		case Types.RESET: {
-			const { key } = action.payload;
-			const previous = state[key] || createSearch();
-			return {
-				...state,
-				[action.payload.key]: {
-					...previous,
-					"pending": false,
-					"uids": [],
-				}
-			} as State;
-		}
-		case Types.START: {
-			const { key } = action.payload;
-			const previous = state[key] || createSearch();
-			return {
-				...state,
-				[action.payload.key]: {
-					...previous,
-					"error": null,
-					"pending": true,
-				}
-			} as State;
-		}
-		case Types.SUCCEED: {
-			const { key, total, uids } = action.payload;
-			const previous = state[key] || createSearch();
-			return {
-				...state,
-				[action.payload.key]: {
-					...previous,
-					"pending": false,
-					total,
 					"uids": [...previous.uids, ...uids],
-				}
+				},
 			} as State;
 		}
-		case Types.UPDATE: {
-			const { fields, filters, key, sort } = action.payload;
+		case Types.SET_TOTAL: {
+			const { key, total } = action.payload;
 			const previous = state[key] || createSearch();
 			return {
 				...state,
-				[action.payload.key]: {
+				[key]: {
 					...previous,
-					"fields": fields || previous.fields,
-					"filters": filters || previous.filters,
-					"sort": sort || previous.sort,
+					total,
+				},
+			} as State;
+		}
+		case Types.SET_PARAMS: {
+			const { key, params: newParams } = action.payload;
+			const { params: oldParams } = state[key] || createSearch();
+			const params = {
+				"fields": newParams.fields || oldParams.fields,
+				"filters": newParams.filters || oldParams.filters,
+				"sort": newParams.sort || oldParams.sort,
+			};
+			// :TODO: Check if actually different?
+			return {
+				...state,
+				[key]: {
+					params,
+					"total": NaN,
+					"uids": [],
 				}
 			} as State;
 		}

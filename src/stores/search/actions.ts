@@ -1,62 +1,47 @@
+
 import { Dispatch } from "redux";
 import { State } from "../";
 import { addEntities, Entity } from "../entities";
-import { Filter } from "./Filter";
-import { Sort } from "./Sort";
+import { Params } from "./Params";
 export enum Types {
-	FAIL = "search/FAIL",
-	RESET = "search/RESET",
-	START = "search/START",
-	SUCCEED = "search/SUCCEED",
-	UPDATE = "search/UPDATE",
+	APPEND_UIDS = "search/APPEND_UIDS",
+	SET_PARAMS = "search/SET_PARAMS",
+	SET_TOTAL = "search/SET_TOTAL",
 }
-export const failSearch = (payload: {
-	error: Error;
+export const appendUIDs = <T>(payload: {
 	key: string;
+	uids: ReadonlyArray<string>;
 }) => ({
 	payload,
-	"type": Types.FAIL as Types.FAIL,
+	"type": Types.APPEND_UIDS as Types.APPEND_UIDS,
 });
-export const resetSearch = (payload: { key: string; }) => ({
+export const setParams = <T>(payload: {
+	key: string;
+	params: Partial<Params<T>>,
+}) => ({
 	payload,
-	"type": Types.RESET as Types.RESET,
+	"type": Types.SET_PARAMS as Types.SET_PARAMS,
 });
-export const startSearch = (payload: { key: string; }) => ({
-	payload,
-	"type": Types.START as Types.START,
-});
-export const succeedSearch = (payload: {
+export const setTotal = <T>(payload: {
 	key: string;
 	total: number;
-	uids: string[];
 }) => ({
 	payload,
-	"type": Types.SUCCEED as Types.SUCCEED,
+	"type": Types.SET_TOTAL as Types.SET_TOTAL,
 });
-export const updateSearch = <T>(payload: {
-	key: string;
-	fields?: Set<keyof T>;
-	filters?: Set<Filter<T, keyof T>>;
-	sort?: Array<Sort<T>>;
-}) => ({
-	payload,
-	"type": Types.UPDATE as Types.UPDATE,
-});
-export const completeSearch = <T>(payload: {
-	entities: Array<Entity & Partial<T>>;
+export const appendSearchEntities = <T>(payload: Readonly<{
+	entities: ReadonlyArray<Entity & Partial<T>>;
 	key: string;
 	total: number;
-}) => (dispatch: Dispatch<State>, getState: () => State) => {
+}>) => (dispatch: Dispatch<State>) => {
 	const { entities, key, total } = payload;
 	dispatch(addEntities(entities));
-	dispatch(succeedSearch({
+	dispatch(setTotal({ key, total }));
+	dispatch(appendUIDs({
 		key,
-		total,
 		"uids": entities.map(entity => entity.uid),
 	}));
 };
-export type Action = ReturnType<typeof failSearch>
-	| ReturnType<typeof resetSearch>
-	| ReturnType<typeof startSearch>
-	| ReturnType<typeof succeedSearch>
-	| ReturnType<typeof updateSearch>;
+export type Action = ReturnType<typeof appendUIDs>
+	| ReturnType<typeof setParams>
+	| ReturnType<typeof setTotal>;

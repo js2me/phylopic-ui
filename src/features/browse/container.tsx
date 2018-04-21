@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { State } from "../../stores";
 import { Image } from "../../stores/entities";
-import { setLightboxImage } from "../../stores/lightbox";
+import { selectImage } from "../../stores/lightbox";
 import { getEntities, getTotal } from "../../stores/search";
 import { getWindowHeight, getWindowWidth } from "../../stores/windowSize";
 import Browse, { DispatchProps, StateProps } from "./";
@@ -17,7 +17,7 @@ const mapStateToProps = (state: State) => ({
 	"width": getWindowWidth(state),
 } as StateProps);
 const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
-	"onImageClick": async(imageUID: string) => dispatch(setLightboxImage({ imageUID })),
+	"onImageClick": async(imageUID: string) => dispatch(selectImage({ imageUID })),
 	"onLoadNext": async(numLoaded: number, numToLoad: number) => dispatch(loadImages(numLoaded, numToLoad)),
 } as DispatchProps);
 export default connect(
