@@ -1,36 +1,22 @@
-import Dialog, { DialogContent } from "material-ui/Dialog";
-import * as React from "react";
-import ProgressIndicator from "../../shared/ProgressIndicator";
-import { Progress } from "../../stores/async";
-import { Entity, Image as ImageModel, Name } from "../../stores/entities";
-import Image from "./Image";
-import Taxonomy from "./Taxonomy";
-export interface DispatchProps {
-	onClose: () => void;
-}
-export interface StateProps {
-	image: Readonly<Entity & ImageModel> | null;
-	names: ReadonlyArray<Entity & Pick<Name, "html">> | null;
-	progress: Progress;
-}
-const Lightbox: React.SFC<DispatchProps & StateProps> = ({
-	image,
-	names,
-	onClose,
-	progress,
-}) => (
-		<Dialog
-			fullWidth={true}
-			maxWidth="md"
-			open={progress.pending || Boolean(image || progress.error)}
-			onClose={onClose}
-		>
-			<DialogContent>
-				<ProgressIndicator progress={progress}>
-					{names && <Taxonomy names={names}/>}
-					{image && <Image image={image}/>}
-				</ProgressIndicator>
-			</DialogContent>
-		</Dialog>
-	);
-export default Lightbox;
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { State } from "../../stores";
+import { getProgress } from "../../stores/async";
+import { getImage, getNames, getProgressKey, selectImage } from "../../stores/lightbox";
+import Component, { DispatchProps, StateProps } from "./component";
+const mapStateToProps = (state: State) => {
+	const key = getProgressKey(state);
+	const progress = getProgress(key)(state);
+	return {
+		"image": getImage(state),
+		"names": getNames(state),
+		progress,
+	} as StateProps;
+};
+const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
+	"onClose": async() => dispatch(selectImage({ "imageUID": null })),
+} as DispatchProps);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(Component);
