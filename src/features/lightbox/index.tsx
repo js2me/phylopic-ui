@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { State } from "../../stores";
 import { getProgress } from "../../stores/async";
 import { getImage, getNames, getProgressKey, selectImage } from "../../stores/lightbox";
-import Component, { DispatchProps, StateProps } from "./component";
+import Component, { DispatchProps, StateProps } from "./Component";
 const mapStateToProps = (state: State) => {
 	const key = getProgressKey(state);
 	const progress = getProgress(key)(state);

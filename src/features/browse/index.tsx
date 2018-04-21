@@ -6,7 +6,7 @@ import { selectImage } from "../../stores/lightbox";
 import { getEntities, getTotal } from "../../stores/search";
 import { getWindowHeight, getWindowWidth } from "../../stores/windowSize";
 import { loadImages } from "./actions";
-import Component, { DispatchProps, StateProps } from "./component";
+import Component, { DispatchProps, StateProps } from "./Component";
 const KEY = "browse";
 const getImages = getEntities<Image>(KEY);
 const getTotalImages = getTotal(KEY);
