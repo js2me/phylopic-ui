@@ -19,14 +19,19 @@ export default (state: State, action: Action) => {
 		state = {};
 	}
 	switch (action.type) {
-		case Types.APPEND_UIDS: {
-			const { key, uids } = action.payload;
+		case Types.INSERT_UIDS: {
+			const { key, start, uids: newUIDs } = action.payload;
 			const previous = state[key] || createSearch();
+			const uids = [
+				...previous.uids.slice(0, start),
+				...newUIDs,
+				...previous.uids.slice(start + newUIDs.length),
+			];
 			return {
 				...state,
 				[key]: {
 					...previous,
-					"uids": [...previous.uids, ...uids],
+					uids,
 				},
 			} as State;
 		}

@@ -2,8 +2,8 @@ import { Dispatch } from "redux";
 import { fetchLegacy, Image as LegacyImage } from "../../legacy/api";
 import { State } from "../../stores";
 import { fail, start, succeed } from "../../stores/async";
-import { addEntities, Entity, Image } from "../../stores/entities";
-import { appendUIDs, setTotal } from "../../stores/search";
+import { Entity, Image } from "../../stores/entities";
+import { insertEntities } from "../../stores/search";
 const key = "browse";
 type Results = Array<Entity & Partial<LegacyImage>>;
 export const loadImages = (startIndex: number, size: number) =>
@@ -22,12 +22,15 @@ export const loadImages = (startIndex: number, size: number) =>
 				"licenseURL": result.licenseURL,
 				"uid": result.uid,
 			}));
-			dispatch(addEntities(entities));
-			dispatch(setTotal({ key, total }));
-			const uids = entities.map(entity => entity.uid);
-			dispatch(appendUIDs({ key, uids }));
+			dispatch(insertEntities({
+				entities,
+				key,
+				"start": startIndex,
+				total,
+			}));
 		} catch (error) {
 			dispatch(fail({ error, key }));
+			return;
 		}
 		dispatch(succeed({ key }));
 	};

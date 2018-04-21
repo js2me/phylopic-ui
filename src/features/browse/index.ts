@@ -18,7 +18,7 @@ const mapStateToProps = (state: State) => ({
 } as StateProps);
 const mapDispatchToProps = (dispatch: Dispatch<State>) => ({
 	"onImageClick": async(imageUID: string) => dispatch(selectImage({ imageUID })),
-	"onLoadNext": async(numLoaded: number, numToLoad: number) => dispatch(loadImages(numLoaded, numToLoad)),
+	"onLoadRequest": async(start: number, size: number) => dispatch(loadImages(start, size)),
 } as DispatchProps);
 export default connect(
 	mapStateToProps,

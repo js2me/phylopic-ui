@@ -4,16 +4,17 @@ import { State } from "../";
 import { addEntities, Entity } from "../entities";
 import { Params } from "./Params";
 export enum Types {
-	APPEND_UIDS = "search/APPEND_UIDS",
+	INSERT_UIDS = "search/INSERT_UIDS",
 	SET_PARAMS = "search/SET_PARAMS",
 	SET_TOTAL = "search/SET_TOTAL",
 }
-export const appendUIDs = <T>(payload: {
+export const insertUIDs = <T>(payload: {
 	key: string;
+	start: number,
 	uids: ReadonlyArray<string>;
 }) => ({
 	payload,
-	"type": Types.APPEND_UIDS as Types.APPEND_UIDS,
+	"type": Types.INSERT_UIDS as Types.INSERT_UIDS,
 });
 export const setParams = <T>(payload: {
 	key: string;
@@ -29,19 +30,23 @@ export const setTotal = <T>(payload: {
 	payload,
 	"type": Types.SET_TOTAL as Types.SET_TOTAL,
 });
-export const appendSearchEntities = <T>(payload: Readonly<{
+export const insertEntities = <T>(payload: Readonly<{
 	entities: ReadonlyArray<Entity & Partial<T>>;
 	key: string;
-	total: number;
+	start: number;
+	total?: number;
 }>) => (dispatch: Dispatch<State>) => {
-	const { entities, key, total } = payload;
+	const { entities, key, start, total } = payload;
 	dispatch(addEntities(entities));
-	dispatch(setTotal({ key, total }));
-	dispatch(appendUIDs({
+	if (total !== undefined) {
+		dispatch(setTotal({ key, total }));
+	}
+	dispatch(insertUIDs({
 		key,
+		start,
 		"uids": entities.map(entity => entity.uid),
 	}));
 };
-export type Action = ReturnType<typeof appendUIDs>
+export type Action = ReturnType<typeof insertUIDs>
 	| ReturnType<typeof setParams>
 	| ReturnType<typeof setTotal>;
