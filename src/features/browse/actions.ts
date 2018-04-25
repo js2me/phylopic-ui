@@ -3,7 +3,7 @@ import { fetchLegacy, Image as LegacyImage } from "../../legacy/api";
 import { State } from "../../stores";
 import { fail, start, succeed } from "../../stores/async";
 import { Entity, Image } from "../../stores/entities";
-import { insertEntities } from "../../stores/search";
+import { insertEntities } from "../../stores/searches";
 const key = "browse";
 type Results = Array<Entity & Partial<LegacyImage>>;
 export const loadImages = (startIndex: number, size: number) =>

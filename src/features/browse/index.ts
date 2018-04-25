@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { State } from "../../stores";
 import { Image } from "../../stores/entities";
 import { selectImage } from "../../stores/lightbox";
-import { getEntities, getTotal } from "../../stores/search";
+import { getEntities, getTotal } from "../../stores/searches";
 import { getWindowHeight, getWindowWidth } from "../../stores/windowSize";
 import { loadImages } from "./actions";
 import Component, { DispatchProps, StateProps } from "./Component";
