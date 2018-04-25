@@ -1,9 +1,8 @@
 import Chip from "material-ui/Chip";
 import * as React from "react";
-import { Grid } from "react-virtualized/dist/es/Grid";
 import { InfiniteLoader } from "react-virtualized/dist/es/InfiniteLoader";
-import Thumbnail from "../../shared/Thumbnail";
 import { Entity, Image } from "../../stores/entities";
+import Grid from "./Grid";
 const CELL_HEIGHT = 108;
 const CELL_WIDTH = 104;
 export interface DispatchProps {
@@ -38,7 +37,7 @@ class Component extends React.Component<DispatchProps & StateProps> {
 		const loadedRows = Math.floor(images.length / columnCount);
 		const visibleRows = ensureMin1(Math.ceil(height / CELL_HEIGHT));
 		return (
-			<div>
+			<div style={{"textAlign": "center"}}>
 				{!isNaN(total) && <div><Chip label={total}/> images in the database.</div>}
 				<InfiniteLoader
 					isRowLoaded={({ index }) => index <= loadedRows}
@@ -49,36 +48,13 @@ class Component extends React.Component<DispatchProps & StateProps> {
 				>
 					{({ onRowsRendered, registerChild }) => (
 						<Grid
-							cellRenderer={({
-								columnIndex,
-								key,
-								rowIndex,
-								style,
-							}) => {
-								const image = images[rowIndex * columnCount + columnIndex];
-								const imageUID = image ? image.uid : undefined;
-								const onClick = imageUID ? () => onImageClick(imageUID) : undefined;
-								return (
-									<div
-										key={key}
-										style={style}
-									>
-										<Thumbnail
-											image={image}
-											onClick={onClick}
-										/>
-									</div>
-								);
-							}}
 							columnWidth={CELL_WIDTH}
 							columnCount={columnCount}
 							height={height}
-							onSectionRendered={({ columnStartIndex, columnStopIndex, rowStartIndex, rowStopIndex }) => {
-								const startIndex = rowStartIndex * columnCount + columnStartIndex;
-								const stopIndex = rowStopIndex * columnCount + columnStopIndex;
-								onRowsRendered({ startIndex, stopIndex });
-							}}
-							ref={registerChild}
+							images={images}
+							onImageClick={onImageClick}
+							onRowsRendered={onRowsRendered}
+							registerChild={registerChild}
 							rowCount={rowCount}
 							rowHeight={CELL_HEIGHT}
 							width={width}
