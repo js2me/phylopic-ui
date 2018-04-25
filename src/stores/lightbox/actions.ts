@@ -43,7 +43,7 @@ export const selectImage = (payload: { imageUID: string | null; }) =>
 		dispatch(start({ key }));
 		let image: (Entity & Image) | null = null;
 		try {
-			const [existingImage] = dispatch(getEntities<Image>([imageUID]));
+			const [existingImage] = await dispatch(getEntities<Image>({"uids": [imageUID]}));
 			if (existingImage && isCompleteImage(existingImage)) {
 				image = existingImage as Entity & Image;
 			} else {
