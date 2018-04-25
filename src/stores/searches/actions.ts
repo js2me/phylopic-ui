@@ -4,9 +4,9 @@ import { State } from "../";
 import { addEntities, Entity } from "../entities";
 import { Params } from "./Params";
 export enum Types {
-	INSERT_UIDS = "search/INSERT_UIDS",
-	SET_PARAMS = "search/SET_PARAMS",
-	SET_TOTAL = "search/SET_TOTAL",
+	INSERT_UIDS = "searches/INSERT_UIDS",
+	SET_PARAMS = "searches/SET_PARAMS",
+	SET_TOTAL = "searches/SET_TOTAL",
 }
 export const insertUIDs = <T>(payload: {
 	key: string;
