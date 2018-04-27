@@ -26,6 +26,8 @@
 		"@types/react-virtualized": "^9.18.0",
 		"@types/redux-actions": "^2.2.4",
 		"@types/redux-thunk": "^2.1.0",
+		"babel-core": "^6.0.0",
+		"babel-runtime": "^6.23.0",
 		"react-scripts-ts": "2.14.0",
 		"typescript": "^2.8.1"
 	},
